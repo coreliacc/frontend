@@ -9,6 +9,7 @@ function PoblacionSelect({ provinciaId, onPoblacionSelect }) {
         const fetchPoblaciones = async () => {
             const response = await fetch(`https://backend-yf8a.onrender.com/api/poblaciones/${provinciaId}`);
             const data = await response.json();
+            const sortedData = data.sort((a, b) => a.nombre.localeCompare(b.nombre));
             setPoblaciones(data);
         };
 

@@ -7,7 +7,8 @@ function TipoViaSelect({ onTipoViaSelect }) {
         const fetchTiposVia = async () => {
             const response = await fetch('https://backend-yf8a.onrender.com/api/tipos_via');
             const data = await response.json();
-            setTiposVia(data);
+            const sortedData = data.sort((a, b) => a.nombre.localeCompare(b.nombre));
+            setTiposVia(sortedData);
         };
         fetchTiposVia();
     }, []);

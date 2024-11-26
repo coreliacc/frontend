@@ -7,7 +7,8 @@ function ProvinciaSelect({ onProvinciaSelect }) {
         const fetchProvincias = async () => {
             const response = await fetch('https://backend-yf8a.onrender.com/api/provincias');
             const data = await response.json();
-            setProvincias(data);
+            const sortedData = data.sort((a, b) => a.nombre.localeCompare(b.nombre));
+            setProvincias(sortedData);
         };
         fetchProvincias();
     }, []);

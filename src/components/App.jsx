@@ -4,6 +4,16 @@ import PoblacionSelect from './PoblacionSelect';
 import TipoViaSelect from './TipoViaSelect';
 import Modal from './Modal';
 
+// Función para normalizar el texto (convertir a mayúsculas)
+function normalizeText(text) {
+    return text
+        .toUpperCase() // Convertir todo a mayúsculas
+        .normalize('NFD') // Descomponer caracteres unicode (para separar acentos)
+        .replace(/[\u0300-\u036f]/g, '') // Eliminar marcas diacríticas (acentos)
+        .replace(/[^\w\s]/gi, '') // Eliminar símbolos especiales, manteniendo solo letras y números
+        .trim(); // Eliminar espacios en blanco al inicio y al final
+}
+
 function App() {
     const [provinciaId, setProvinciaId] = useState(null);
     const [poblacionId, setPoblacionId] = useState(null);
@@ -14,13 +24,16 @@ function App() {
     const [cobertura, setCobertura] = useState(null);
 
     const buscarCobertura = async () => {
+        // Normalizar nombre de vía antes de enviar la solicitud
+        const normalizedNombreVia = normalizeText(nombreVia);
+
         const response = await fetch('https://backend-yf8a.onrender.com/api/buscarDireccion', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 numero,
                 cp,
-                nombre_via: nombreVia,
+                nombre_via: normalizedNombreVia, // Usar nombre normalizado
                 poblacion_id: poblacionId,
             }),
         });
